@@ -93,47 +93,47 @@ export default function WorkoutDetails() {
       </div>
 
       <div className="mt-8">
-        <h2 className="text-2xl font-black mb-4">
-          INSTRUCTIONS
-        </h2>
+  <h2 className="text-2xl font-black mb-4">
+    INSTRUCTIONS
+  </h2>
 
-        <ol className="space-y-4">
-          {workout.instructions.map((instruction: string, index: number) => (
-            <li
-              key={index}
-              className="flex gap-4 text-gray-300"
-            >
-              <span className="text-lime-400 font-bold">
-                {String(index + 1).padStart(2, "0")}
-              </span>
+  <ol className="space-y-4">
+    {workout.instructions.map((instruction: string, index: number) => (
+      <li
+        key={index}
+        className="flex gap-4 text-gray-300"
+      >
+        <span className="text-lime-400 font-bold">
+          {String(index + 1).padStart(2, "0")}
+        </span>
 
-              <div className="flex gap-4 mt-8">
-                <button
-                  onClick={() => {
-                    addToPlan(workout);
-                    toast.success("Added to today's plan");
-                  }}
-                  className="bg-lime-400 text-black font-bold px-6 py-3"
-                >
-                  Add to today's plan
-                </button>
+        <span>{instruction}</span>
+      </li>
+    ))}
+  </ol>
 
-                <button
-                  onClick={() => {
-                    addToSaved(workout);
-                    toast.success("Saved for later");
-                  }}
-                  className="border border-lime-400 text-lime-400 font-bold px-6 py-3"
-                >
-                  Save for later
-                </button>
-              </div>
+  <div className="flex gap-4 mt-8">
+    <button
+      onClick={() => {
+        addToPlan(workout);
+        toast.success("Added to today's plan");
+      }}
+      className="bg-lime-400 text-black font-bold px-6 py-3"
+    >
+      Add to today's plan
+    </button>
 
-              <span>{instruction}</span>
-            </li>
-          ))}
-        </ol>
-      </div>
+    <button
+      onClick={() => {
+        addToSaved(workout);
+        toast.success("Saved for later");
+      }}
+      className="border border-lime-400 text-lime-400 font-bold px-6 py-3"
+    >
+      Save for later
+    </button>
+  </div>
+</div>
     </main>
   );
 }

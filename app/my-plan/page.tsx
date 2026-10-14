@@ -9,6 +9,7 @@ export default function MyPlanPage() {
     const {
         plan,
         saved,
+        loaded,
         removeFromPlan,
         markAsDone,
     } = useWorkout();
@@ -27,8 +28,25 @@ export default function MyPlanPage() {
         0
     );
 
+    if (!loaded) {
+        return (
+            <main className="w-[92%] max-w-7xl mx-auto py-16">
+                <p className="text-gray-400">
+                    Loading workouts...
+                </p>
+            </main>
+        );
+    }
+
     return (
         <main className="w-[92%] max-w-7xl mx-auto py-16">
+            <h1 className="text-4xl font-black mb-2">
+                MY PLAN
+            </h1>
+
+            <p className="text-gray-400 mb-8">
+                Cap of five lifts for today. Finish them, then load more.
+            </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 mb-8">
                 <div className="border border-gray-800 p-5">
                     <p className="text-gray-500 text-sm">EXERCISES</p>
@@ -73,9 +91,16 @@ export default function MyPlanPage() {
                         NOTHING HERE YET
                     </h2>
 
-                    <p className="text-gray-400">
+                    <p className="text-gray-400 mb-6">
                         Browse the library and add a lift to get today moving.
                     </p>
+
+                    <Link
+                        href="/#library"
+                        className="inline-block bg-lime-400 text-black font-bold px-6 py-3"
+                    >
+                        Go to workouts
+                    </Link>
                 </div>
             ) : (
                 <div className="space-y-4">
