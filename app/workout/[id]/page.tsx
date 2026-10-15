@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useParams } from "next/navigation";
+import { useParams, notFound } from "next/navigation";
 import { useWorkout } from "@/context/WorkoutContext";
 import toast from "react-hot-toast";
 import { FaPlus, FaBookmark } from "react-icons/fa";
@@ -9,6 +9,7 @@ import { FaPlus, FaBookmark } from "react-icons/fa";
 export default function WorkoutDetails() {
   const params = useParams();
   const id = params.id;
+
   const { addToPlan, addToSaved } = useWorkout();
 
   const [workout, setWorkout] = useState<any>(null);
@@ -16,13 +17,20 @@ export default function WorkoutDetails() {
 
   useEffect(() => {
     fetch(`https://api.abcz.workers.dev/api/fitlog/${id}`)
-      .then((res) => res.json())
+      .then((res) => {
+        if (!res.ok) {
+          return null;
+        }
+
+        return res.json();
+      })
       .then((data) => {
         setWorkout(data);
         setLoading(false);
       })
       .catch((error) => {
         console.error(error);
+        setWorkout(null);
         setLoading(false);
       });
   }, [id]);
@@ -33,6 +41,10 @@ export default function WorkoutDetails() {
         <p className="text-gray-400">Loading workout...</p>
       </main>
     );
+  }
+
+  if (!workout) {
+    notFound();
   }
 
   return (
@@ -99,18 +111,20 @@ export default function WorkoutDetails() {
         </h2>
 
         <ol className="space-y-4">
-          {workout.instructions.map((instruction: string, index: number) => (
-            <li
-              key={index}
-              className="flex gap-4 text-gray-300"
-            >
-              <span className="text-lime-400 font-bold">
-                {String(index + 1).padStart(2, "0")}
-              </span>
+          {workout.instructions.map(
+            (instruction: string, index: number) => (
+              <li
+                key={index}
+                className="flex gap-4 text-gray-300"
+              >
+                <span className="text-lime-400 font-bold">
+                  {String(index + 1).padStart(2, "0")}
+                </span>
 
-              <span>{instruction}</span>
-            </li>
-          ))}
+                <span>{instruction}</span>
+              </li>
+            )
+          )}
         </ol>
 
         <div className="flex flex-wrap gap-4 mt-8">
@@ -124,7 +138,9 @@ export default function WorkoutDetails() {
               } else if (result === "exists") {
                 toast.error("This workout is already in your plan");
               } else if (result === "full") {
-                toast.error("Today's plan can only contain 5 workouts");
+                toast.error(
+                  "Today's plan can only contain 5 workouts"
+                );
               }
             }}
             className="flex items-center gap-2 bg-lime-400 text-black font-bold px-6 py-3"
