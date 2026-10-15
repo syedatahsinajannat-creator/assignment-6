@@ -33,7 +33,7 @@ FitLog is a responsive workout library and fitness planning application built wi
 
 ## Live Link
 
-Coming soon.
+https://assignment-6-chi-ten.vercel.app/
 
 ## GitHub Repository
 
