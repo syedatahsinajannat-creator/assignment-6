@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { useParams } from "next/navigation";
 import { useWorkout } from "@/context/WorkoutContext";
 import toast from "react-hot-toast";
+import { FaPlus, FaBookmark } from "react-icons/fa";
 
 export default function WorkoutDetails() {
   const params = useParams();
@@ -93,47 +94,58 @@ export default function WorkoutDetails() {
       </div>
 
       <div className="mt-8">
-  <h2 className="text-2xl font-black mb-4">
-    INSTRUCTIONS
-  </h2>
+        <h2 className="text-2xl font-black mb-4">
+          INSTRUCTIONS
+        </h2>
 
-  <ol className="space-y-4">
-    {workout.instructions.map((instruction: string, index: number) => (
-      <li
-        key={index}
-        className="flex gap-4 text-gray-300"
-      >
-        <span className="text-lime-400 font-bold">
-          {String(index + 1).padStart(2, "0")}
-        </span>
+        <ol className="space-y-4">
+          {workout.instructions.map((instruction: string, index: number) => (
+            <li
+              key={index}
+              className="flex gap-4 text-gray-300"
+            >
+              <span className="text-lime-400 font-bold">
+                {String(index + 1).padStart(2, "0")}
+              </span>
 
-        <span>{instruction}</span>
-      </li>
-    ))}
-  </ol>
+              <span>{instruction}</span>
+            </li>
+          ))}
+        </ol>
 
-  <div className="flex gap-4 mt-8">
-    <button
-      onClick={() => {
-        addToPlan(workout);
-        toast.success("Added to today's plan");
-      }}
-      className="bg-lime-400 text-black font-bold px-6 py-3"
-    >
-      Add to today's plan
-    </button>
+        <div className="flex flex-wrap gap-4 mt-8">
+          <button
+            type="button"
+            onClick={() => {
+              const result = addToPlan(workout);
 
-    <button
-      onClick={() => {
-        addToSaved(workout);
-        toast.success("Saved for later");
-      }}
-      className="border border-lime-400 text-lime-400 font-bold px-6 py-3"
-    >
-      Save for later
-    </button>
-  </div>
-</div>
+              if (result === "added") {
+                toast.success("Added to today's plan");
+              } else if (result === "exists") {
+                toast.error("This workout is already in your plan");
+              } else if (result === "full") {
+                toast.error("Today's plan can only contain 5 workouts");
+              }
+            }}
+            className="flex items-center gap-2 bg-lime-400 text-black font-bold px-6 py-3"
+          >
+            <FaPlus />
+            Add to today&apos;s plan
+          </button>
+
+          <button
+            type="button"
+            onClick={() => {
+              addToSaved(workout);
+              toast.success("Saved for later");
+            }}
+            className="flex items-center gap-2 border border-lime-400 text-lime-400 font-bold px-6 py-3"
+          >
+            <FaBookmark />
+            Save for later
+          </button>
+        </div>
+      </div>
     </main>
   );
 }

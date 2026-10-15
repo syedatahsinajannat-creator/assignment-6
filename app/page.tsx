@@ -67,7 +67,10 @@ export default function Home() {
                 </div>
 
                 {loading ? (
-                    <p className="text-gray-400">Loading workouts...</p>
+                    <div className="flex items-center gap-3 py-10">
+                        <div className="w-6 h-6 border-2 border-gray-700 border-t-lime-400 rounded-full animate-spin"></div>
+                        <p className="text-gray-400">Loading workouts...</p>
+                    </div>
                 ) : (
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
                         {sortedWorkouts.map((workout) => (

@@ -48,14 +48,21 @@ export function WorkoutProvider({ children }) {
   }, [saved, loaded]);
 
   const addToPlan = (workout) => {
-    const alreadyAdded = plan.some(
-      (item) => item.id === workout.id
-    );
+  const alreadyAdded = plan.some(
+    (item) => item.id === workout.id
+  );
 
-    if (alreadyAdded || plan.length >= 5) return;
+  if (alreadyAdded) {
+    return "exists";
+  }
 
-    setPlan((prev) => [...prev, workout]);
-  };
+  if (plan.length >= 5) {
+    return "full";
+  }
+
+  setPlan((prev) => [...prev, workout]);
+  return "added";
+};
 
   const addToSaved = (workout) => {
     const alreadySaved = saved.some(
